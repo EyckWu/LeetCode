@@ -1,8 +1,11 @@
 package test.chapter_0001; 
 
-import org.junit.Test; 
+import chapter_0001.TwoSum;
+import org.junit.Test;
 import org.junit.Before; 
-import org.junit.After; 
+import org.junit.After;
+
+import java.util.Arrays;
 
 /** 
 * TwoSum Tester. 
@@ -27,8 +30,11 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testTwoSum() throws Exception { 
-
+public void testTwoSum() throws Exception {
+    int[] nums = new int[]{2, 7, 11, 15};
+    int target = 9;
+    int[] result = new int[]{0, 1};
+    assert Arrays.equals(new TwoSum().twoSum(nums, target),result);
 } 
 
 
