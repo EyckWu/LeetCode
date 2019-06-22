@@ -6,4 +6,4 @@
 
 而外部排序是因排序的数据很大，一次不能容纳全部的排序记录，在排序过程中需要访问外存。
 
-![](https://ws1.sinaimg.cn/large/6b0d07d7gy1g47du7hr0nj20rx0h0djx.jpg)
+![](https://github.com/EyckWu/LeetCode/raw/master/src/chapter_0000/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%B1%87%E6%80%BB.webp)
