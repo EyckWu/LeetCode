@@ -187,7 +187,7 @@ public class ShellSort implements ISortArray {
 }
 ```
 
-### 5 归并排序
+### 5 归并排序(Merge Sort)
 
 归并排序是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为2-路归并。 
 
@@ -246,4 +246,60 @@ public class MergeSort implements ISortArray {
 }
 ```
 
+### 6 快速排序(Quick Sort)
 
+快速排序的基本思想：通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。
+
+6.1 算法描述
+
+快速排序使用分治法来把一个串（list）分为两个子串（sub-lists）。具体算法描述如下：
+
+- 从数列中挑出一个元素，称为 “基准”（pivot）；
+- 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
+- 递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
+
+6.2 动画演示
+
+![](https://ws1.sinaimg.cn/large/6b0d07d7gy1g4xz80qnf3g20qi0extsn.gif)
+
+6.3 代码实现
+
+```
+public class QuickSort implements ISortArray {
+    @Override
+    public int[] sort(int[] sourceArray) {
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+        return quickSort(arr, 0, arr.length - 1);
+    }
+
+    private int[] quickSort(int[] arr, int left, int right){
+        if (left < right){
+            int partitionIndex = partition(arr, left, right);
+            quickSort(arr, left, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, right);
+        }
+        return arr;
+    }
+
+    private int partition(int[] arr, int left, int right){
+        // 设置基准值(pivot)
+        int pivot = left;
+        int index = left + 1;
+        for (int i = index; i <=right; i++){
+            if (arr[i] < arr[pivot]){
+                swap(arr, i , index);
+                index++;
+            }
+        }
+        swap(arr, pivot, index - 1);
+        return index - 1;
+    }
+
+    private void swap(int[] arr, int i, int index) {
+        System.out.println("arr[i] = " + arr[i] + ";arr[index] = " + arr[index]);
+        int tmp = arr[i];
+        arr[i] = arr[index];
+        arr[index] = tmp;
+    }
+}
+```
