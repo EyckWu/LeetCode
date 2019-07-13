@@ -160,13 +160,90 @@ public class InsertionSort implements ISortArray {
 
 ![](https://ws1.sinaimg.cn/large/6b0d07d7gy1g4xxhake3xg20qi0exkc0.gif)
 
-4.3 代码演示
+4.3 代码实现
+
+```
+public class ShellSort implements ISortArray {
+    @Override
+    public int[] sort(int[] sourceArray) {
+        int gap = 1;
+        while(gap < sourceArray.length){
+            gap = gap * 3 + 1;
+        }
+        while(gap > 0){
+            for (int i = gap; i < sourceArray.length; i++){
+                int tmp = sourceArray[i];
+                int j = i - gap;
+                while (j >= 0 && sourceArray[j] > tmp){
+                    sourceArray[j + gap] = sourceArray[j];
+                    j -= gap;
+                }
+                sourceArray[j + gap] = tmp;
+            }
+            gap = (int)Math.floor(gap / 3);
+        }
+        return sourceArray;
+    }
+}
+```
+
+### 5 归并排序
+
+归并排序是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为2-路归并。 
+
+5.1 算法描述
+
+- 把长度为n的输入序列分成两个长度为n/2的子序列；
+- 对这两个子序列分别采用归并排序；
+- 将两个排序好的子序列合并成一个最终的排序序列。
 
 
+5.2 动画演示
+
+![](https://ws1.sinaimg.cn/large/6b0d07d7gy1g4xy2htiftg20qi0exx1i.gif)
 
 
+5.3 代码实现
 
+```
+public class MergeSort implements ISortArray {
+    @Override
+    public int[] sort(int[] sourceArray) {
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+        if (arr.length < 2){
+            return arr;
+        }
+        int middle = (int)Math.floor(arr.length / 2);
 
+        int[] left = Arrays.copyOfRange(arr, 0, middle);
+        int[] right = Arrays.copyOfRange(arr, middle, arr.length);
+        return merge(sort(left), sort(right));
+    }
 
+    protected int[] merge(int[] left, int[] right){
+        int[] result = new int[left.length + right.length];
+        int i = 0;
+        while(left.length > 0 && right.length > 0){
+            if (left[0] <= right[0]){
+                result[i++] = left[0];
+                left = Arrays.copyOfRange(left, 1, left.length);
+            } else {
+                result[i++] = right[0];
+                right = Arrays.copyOfRange(right, 1, right.length);
+            }
+        }
+        while (left.length > 0){
+            result[i++] = left[0];
+            left = Arrays.copyOfRange(left, 1, left.length);
+        }
+
+        while (right.length > 0){
+            result[i++] = right[0];
+            right = Arrays.copyOfRange(right, 1, right.length);
+        }
+        return result;
+    }
+}
+```
 
 
