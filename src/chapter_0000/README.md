@@ -323,3 +323,205 @@ public class QuickSort implements ISortArray {
 ```
 
 ```
+
+
+### 8 计数排序(Count Sort)
+
+计数排序不是基于比较的排序算法，其核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。 作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的整数。
+
+8.1 算法描述
+
+- 找出待排序的数组中最大和最小的元素；
+- 统计数组中每个值为i的元素出现的次数，存入数组C的第i项；
+- 对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）；
+- 反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1。
+
+8.2 动画演示
+
+![](http://ww1.sinaimg.cn/large/6b0d07d7gy1g4yjcb8qmfg20s40fhdmw.gif)
+
+8.3 代码实现
+
+```
+public class CountSort implements ISortArray {
+    @Override
+    public int[] sort(int[] sourceArray) {
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+        int maxValue = getMaxValue(arr);
+        int[] bucket = new int[maxValue + 1];
+        for (int i = 0; i < arr.length; i++){
+            bucket[arr[i]]++;
+        }
+        System.out.println("bucket = " + Arrays.toString(bucket));
+        int sortIndex = 0;
+        for (int i = 0; i < bucket.length; i++){
+            while (bucket[i] > 0) {
+                arr[sortIndex++] = i;
+                bucket[i]--; 
+            }
+        }
+        return arr;
+    }
+
+    private int getMaxValue(int[] arr) {
+        int maxValue = arr[0];
+        for (int i = 1; i < arr.length; i++){
+            if (maxValue < arr[i]){
+                maxValue = arr[i];
+            }
+        }
+        return maxValue;
+    }
+}
+```
+
+### 9 桶排序(Bucket Sort)
+
+桶排序是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。桶排序 (Bucket sort)的工作的原理：假设输入数据服从均匀分布，将数据分到有限数量的桶里，每个桶再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排）。
+
+9.1 算法描述
+
+- 设置一个定量的数组当作空桶；
+- 遍历输入数据，并且把数据一个一个放到对应的桶里去；
+- 对每个不是空的桶进行排序；
+- 从不是空的桶里把排好序的数据拼接起来。 
+
+9.2 动画演示
+
+![](http://ww1.sinaimg.cn/large/6b0d07d7gy1g4z6yj645ng20qi0exhdt.gif)
+
+9.3 代码实现
+
+```
+public class BucketSort implements ISortArray {
+    @Override
+    public int[] sort(int[] sourceArray) {
+        if (sourceArray.length <= 1){
+            return sourceArray;
+        }
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+        int bucketSize = 5;
+        int maxValue = arr[0];
+        int minValue = arr[0];
+        for (int i = 0; i < arr.length; i++){
+            if (maxValue < arr[i]){
+                maxValue = arr[i];
+            } else if (minValue > arr[i]){
+                minValue = arr[i];
+            }
+        }
+        int bucketCount = (int)Math.floor((maxValue - minValue) / bucketSize) + 1;
+        int[][] buckets = new int[bucketCount][0];
+        // 利用映射函数分配到各个桶中
+        for (int i = 0; i < arr.length; i++){
+            int index = (int)Math.floor((arr[i] - minValue) / bucketSize);
+            buckets[index] = arrAppend(buckets[index], arr[i]);
+        }
+        int arrIndex = 0;
+        ISortArray insertionSort = new InsertionSort();
+        for (int[] bucket: buckets){
+            if (bucket.length <= 0){
+                continue;
+            }
+            bucket = insertionSort.sort(bucket);
+            for (int value: bucket){
+                arr[arrIndex++] = value;
+            }
+        }
+        return arr;
+    }
+
+    private int[] arrAppend(int[] bucket, int ivalue) {
+        bucket = Arrays.copyOf(bucket, bucket.length + 1);
+        bucket[bucket.length - 1] = ivalue;
+        return bucket;
+    }
+}
+```
+
+### 10 基数排序
+
+基数排序是按照低位先排序，然后收集；再按照高位排序，然后再收集；依次类推，直到最高位。有时候有些属性是有优先级顺序的，先按低优先级排序，再按高优先级排序。最后的次序就是高优先级高的在前，高优先级相同的低优先级高的在前。
+
+10.1 算法描述
+
+- 取得数组中的最大数，并取得位数；
+- arr为原始数组，从最低位开始取每个位组成radix数组；
+- 对radix进行计数排序（利用计数排序适用于小范围数的特点）；
+
+10.2 动图演示
+
+![](http://ww1.sinaimg.cn/large/6b0d07d7gy1g4zcs6go12g20s40fydky.gif)
+
+10.3 代码实现
+
+```
+public class RadixSort implements ISortArray {
+    @Override
+    public int[] sort(int[] sourceArray) {
+        // 对 arr 进行拷贝，不改变参数内容
+        int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+        int maxDigit = getMaxDigit(arr);
+        return radixSort(arr, maxDigit);
+    }
+
+    /**
+     * 获取最高位数
+     */
+    private int getMaxDigit(int[] arr) {
+        int maxValue = getMaxValue(arr);
+        return getNumLenght(maxValue);
+    }
+
+    private int getMaxValue(int[] arr) {
+        int maxValue = arr[0];
+        for (int value : arr) {
+            if (maxValue < value) {
+                maxValue = value;
+            }
+        }
+        return maxValue;
+    }
+
+
+    protected int getNumLenght(long num) {
+        if (num == 0) {
+            return 1;
+        }
+        int lenght = 0;
+        for (long temp = num; temp != 0; temp /= 10) {
+            lenght++;
+        }
+        return lenght;
+    }
+
+
+    private int[] radixSort(int[] arr, int maxDigit) {
+        int mod = 10;
+        int dev = 1;
+        for (int i = 0; i < maxDigit; i++, dev *= 10, mod *= 10) {
+            // 考虑负数的情况，这里扩展一倍队列数，其中 [0-9]对应负数，[10-19]对应正数 (bucket + 10)
+            int[][] counter = new int[mod * 2][0];
+            for (int j = 0; j < arr.length; j++) {
+                int bucket = ((arr[j] % mod) / dev) + mod;
+                counter[bucket] = arrayAppend(counter[bucket], arr[j]);
+
+            }
+            int pos = 0;
+            for (int[] bucket : counter) {
+                for (int value : bucket) {
+                    arr[pos++] = value;
+                }
+            }
+        }
+        return arr;
+    }
+
+    private int[] arrayAppend(int[] arr, int value) {
+        arr = Arrays.copyOf(arr, arr.length + 1);
+        arr[arr.length - 1] = value;
+        return arr;
+
+    }
+}
+```
