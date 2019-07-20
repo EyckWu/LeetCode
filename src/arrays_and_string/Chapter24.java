@@ -1,4 +1,4 @@
-package 数组和字符串;
+package arrays_and_string;
 
 import java.util.ArrayList;
 import java.util.List;

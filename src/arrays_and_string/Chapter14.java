@@ -1,4 +1,4 @@
-package 数组和字符串;
+package arrays_and_string;
 
 /**
  * @author : EyckWu
