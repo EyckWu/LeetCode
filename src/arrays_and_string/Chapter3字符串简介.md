@@ -95,3 +95,155 @@ public class Chapter31 {
     }
 }
 ```
+
+## 4. 实现strStr
+
+实现 strStr() 函数。
+
+给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。
+
+示例 1:
+```markdown
+输入: haystack = "hello", needle = "ll"
+输出: 2
+```
+
+示例 2:
+```markdown
+输入: haystack = "aaaaa", needle = "bba"
+输出: -1
+```
+说明:
+
+当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。
+
+对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。
+
+```java
+public class Chapter32 {
+    public static void main(String[] args){
+        Chapter32 chapter32 = new Chapter32();
+        String haystack = "hello", needle = "ll";
+        Log.d(chapter32.strStr(haystack, needle));
+    }
+
+    public int strStr(String haystack, String needle){
+        if (needle == null || needle.isEmpty()){
+            return 0;
+        }
+        if (haystack == null || haystack.isEmpty()){
+            return -1;
+        }
+        char[] haystackArray = haystack.toCharArray();
+        char[] needleArray = needle.toCharArray();
+        char targetFirst = needleArray[0];
+        int max = haystackArray.length;
+        int targetCount = needleArray.length;
+        for (int i = 0; i < max; i++){
+            if (haystackArray[i] != targetFirst){
+                while (++i < max && haystackArray[i] != targetFirst);
+            }
+            if (i < max){
+                int j = i + 1;
+                int end = j + targetCount - 1;
+                if (end > max) {
+                    return -1;
+                }
+                for (int k = 1; j < end && haystackArray[j] == needleArray[k]; j++,k++);
+                if (j == end){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+}
+```
+
+### 5. 最长公共前缀
+
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 ""。
+
+示例 1:
+```markdown
+输入: ["flower","flow","flight"]
+输出: "fl"
+```
+
+示例 2:
+```markdown
+输入: ["dog","racecar","car"]
+输出: ""
+```
+
+解释: 输入不存在公共前缀。
+说明:
+
+所有输入只包含小写字母 a-z 。
+
+横向扫描法
+
+![](http://ww1.sinaimg.cn/large/6b0d07d7gy1g57dvc0gwfj20zk0q6dg7.jpg)
+
+纵向扫描法
+
+![](http://ww1.sinaimg.cn/large/6b0d07d7gy1g57dvypn6rj20rr0qoglx.jpg)
+
+```java
+public class Chapter33 {
+    public static void main(String[] args){
+        Chapter33 chapter33 = new Chapter33();
+        String[] strs = {"flower","flow","flight"};
+        Log.d(chapter33.longestCommentPrefix(strs));
+        Log.d(chapter33.longestCommentPrefix2(strs));
+        String[] strs2 = {"dog","racecar","car"};
+        Log.d(chapter33.longestCommentPrefix(strs2));
+        Log.d(chapter33.longestCommentPrefix2(strs2));
+    }
+
+    /**
+     * 横向扫描法
+     * @param strs
+     * @return
+     */
+    public String longestCommentPrefix(String[] strs){
+        if (strs == null || strs.length == 0){
+            return "";
+        }
+        String result = strs[0];
+        for (int i = 1; i < strs.length; i++){
+            while (strs[i].indexOf(result) != 0){
+                result = result.substring(0, result.length() - 1);
+                if (result.length() == 0){
+                    return "";
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 纵向扫描法
+     * @param strs
+     * @return
+     */
+    public String longestCommentPrefix2(String[] strs){
+        if (strs == null || strs.length == 0){
+            return "";
+        }
+        for (int i = 0; i < strs[0].length(); i++){
+            char c = strs[0].charAt(i);
+            for (int j = 0; j < strs.length; j++){
+                if (i == strs[j].length() || c != strs[j].charAt(i)){
+                    return strs[0].substring(0, i);
+                }
+            }
+        }
+        return strs[0];
+    }
+}
+```
+
+
