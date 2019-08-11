@@ -269,3 +269,51 @@ public class Chapter45 {
     }
 }
 ```
+
+### 8. 长度最小的子数组
+
+给定一个含有 n 个正整数的数组和一个正整数 s ，找出该数组中满足其和 ≥ s 的长度最小的连续子数组。如果不存在符合条件的连续子数组，返回 0。
+
+示例: 
+```
+输入: s = 7, nums = [2,3,1,2,4,3]
+输出: 2
+解释: 子数组 [4,3] 是该条件下的长度最小的连续子数组。
+进阶:
+```
+如果你已经完成了O(n) 时间复杂度的解法, 请尝试 O(n log n) 时间复杂度的解法。
+
+双指针法：
+
+双指针的核心思想就是要维护两个指针：一个快指针和一个慢指针，并确定两个指针的移动策略。有了这个思路，再想一下这个题目里面双指针的移动策略应该怎么确定。
+
+首先可以将元素尽量多地累计起来，让它们的和超过s，再按数组的索引，从小到大去掉一些元素，使元素和逼近s，并保持元素和大于等于s。这个时候，通过一左一右两个指针（索引）就可以计算出最小连续数组的长度。
+
+```
+public class Chapter46 {
+
+    public static void main(String[] args){
+        Chapter46 chapter46 = new Chapter46();
+        int[] nums = {2, 3, 1, 2, 4, 3};
+        int target = 7;
+        Log.d(chapter46.minSubArrayLen(target, nums));
+    }
+
+    public int minSubArrayLen(int s, int[] nums){
+        if (nums == null || nums.length == 0){
+            return 0;
+        }
+        int sum = 0;
+        int left = 0;
+        int minLength = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++){
+            sum += nums[i];
+            while (sum >= s){
+                minLength = Math.min(minLength, i -left + 1);
+                sum -= nums[left++];
+            }
+        }
+        return (minLength != Integer.MAX_VALUE) ? minLength : 0;
+    }
+}
+```

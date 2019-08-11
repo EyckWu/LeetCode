@@ -9,18 +9,34 @@ import java.util.Arrays;
  */
 public class Log {
     public static void d(Object msg){
-        System.out.println(msg.toString());
+        d("", msg);
     }
 
     public static void d(Object[] msgs){
-        System.out.println(Arrays.toString(msgs));
+        d("", msgs);
     }
 
     public static void d(char[] c){
-        System.out.println(Arrays.toString(c));
+        d("", c);
     }
 
     public static void d(int[] i){
-        System.out.println(Arrays.toString(i));
+        d("", i);
+    }
+
+    public static void d(String tag, Object msg){
+        System.out.println(tag + " : " + msg.toString());
+    }
+
+    public static void d(String tag, Object[] msgs){
+        System.out.println(tag + " : " + Arrays.toString(msgs));
+    }
+
+    public static void d(String tag, char[] c){
+        System.out.println(tag + " : " + Arrays.toString(c));
+    }
+
+    public static void d(String tag, int[] i){
+        System.out.println(tag + " : " + Arrays.toString(i));
     }
 }
