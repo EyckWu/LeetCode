@@ -1,11 +1,12 @@
 package listnode;
 
-
-import java.util.LinkedList;
-
+/**
+ * 设计链表
+ * @param <E>
+ */
 public class MyLinkedList<E> {
     transient int size = 0;
-    transient Node head;
+    transient ListNode head;
 
     /** Initialize your data structure here. */
     public MyLinkedList() {
@@ -20,8 +21,8 @@ public class MyLinkedList<E> {
         return node(index).value;
     }
 
-    Node node(int index){
-        Node x = this.head;
+    ListNode node(int index){
+        ListNode x = this.head;
         for (int i = 0; i < index; i++){
             x = x.next;
         }
@@ -30,8 +31,8 @@ public class MyLinkedList<E> {
 
     /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
     public void addAtHead(int val) {
-        Node h = head;
-        Node newHead = new Node(val, h);
+        ListNode h = head;
+        ListNode newHead = new ListNode(val, h);
         this.head = newHead;
         size++;
     }
@@ -39,10 +40,10 @@ public class MyLinkedList<E> {
     /** Append a node of value val to the last element of the linked list. */
     public void addAtTail(int val) {
         if (this.size == 0){
-            this.head = new Node(val, null);
+            this.head = new ListNode(val, null);
         } else {
-            Node tail = node(size - 1);
-            Node newTail = new Node(val, null);
+            ListNode tail = node(size - 1);
+            ListNode newTail = new ListNode(val, null);
             tail.next = newTail;
         }
         size++;
@@ -55,8 +56,8 @@ public class MyLinkedList<E> {
         } else if (index == size){
             addAtTail(val);
         } else if (index < size){
-            Node prevSucc = node(index - 1);
-            Node newNode = new Node(val, prevSucc.next);
+            ListNode prevSucc = node(index - 1);
+            ListNode newNode = new ListNode(val, prevSucc.next);
             prevSucc.next = newNode;
             size++;
         }
@@ -68,7 +69,7 @@ public class MyLinkedList<E> {
     }
 
     public void deleteAtTail(){
-        Node tailNode = node(size - 1);
+        ListNode tailNode = node(size - 1);
         tailNode.next = null;
         size--;
     }
@@ -86,30 +87,9 @@ public class MyLinkedList<E> {
             deleteAtTail();
             return;
         }
-        Node prevSucc = node(index - 1);
+        ListNode prevSucc = node(index - 1);
         prevSucc.next = prevSucc.next.next;
         size--;
-    }
-
-    class Node{
-        int value;
-        Node next;
-
-        public Node() {
-        }
-
-        public Node(int value, Node next) {
-            this.value = value;
-            this.next = next;
-        }
-
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "value=" + value +
-                    ", next=" + next +
-                    '}';
-        }
     }
 
 }
