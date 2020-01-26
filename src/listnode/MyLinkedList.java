@@ -18,7 +18,7 @@ public class MyLinkedList<E> {
         if (index < 0 || index >= size){
             return -1;
         }
-        return node(index).value;
+        return node(index).val;
     }
 
     ListNode node(int index){
