@@ -202,27 +202,3 @@ ReturnType aggregateByKey_hashmap(List<Type>& keys) {
 在上面的示例中，我们的映射策略可以是：对字符串进行排序并使用排序后的字符串作为键。也就是说，“eat” 和 “ate” 都将映射到 “aet”。
 
 有时，设计映射策略可能是非常棘手的。我们将在本章为您提供一些练习，并在此之后给出总结。
-
-## 设计键 - 总结
-
-#### 1. 当字符串/数组中每个元素的顺序不重要时，可以使用排序后的字符串/数组作为键。
-
-![](https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/09/06/screen-shot-2018-02-28-at-144518.png)
-
-#### 2. 如果只关心每个值的偏移量，通常是第一个值的偏移量，则可以使用偏移量作为键。
-
-![](https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/09/06/screen-shot-2018-02-28-at-144738.png)
-
-#### 3. 在树中，你有时可能会希望直接使用 TreeNode 作为键。 但在大多数情况下，采用子树的序列化表述可能是一个更好的主意。
-
-![](https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/09/06/screen-shot-2018-02-28-at-143858.png)
-
-#### 4. 在矩阵中，你可能希望使用行索引或者列索引作为主键。
-
-#### 5. 在数独中，可以使用行索引和列索引组合来标识此元素属于哪个块。
-
-![](https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/09/06/screen-shot-2018-02-28-at-145454.png)
-
-#### 6. 有时，在矩阵中，您可能希望将值聚合在一对角线中。
-
-![](https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/09/06/screen-shot-2018-02-28-at-140029.png)
